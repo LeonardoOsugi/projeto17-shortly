@@ -26,4 +26,19 @@ export async function postUrlShort(req, res){
     }catch(err){
         res.status(500).send(err);
     }
+};
+
+export async function getShortId(req, res){
+    const{id} = req.params;
+
+    try{
+        const urlExist = await db.query(`SELECT id,"shortUrl", url  FROM urls WHERE id = $1`,[id]);
+        if(urlExist.rowCount === 0 || !urlExist){
+            return res.sendStatus(404);
+        };
+
+        res.status(200).send(urlExist.rows[0]);
+    }catch(err){
+        res.status(500).send(err);
+    }
 }
