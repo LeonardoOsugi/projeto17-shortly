@@ -30,8 +30,7 @@ export async function postSinin(req, res){
         if(userExist.rowCount !== 0 && bcrypt.compareSync(password, userExist.rows[0].password)){
             
             await db.query(`INSERT INTO sessions (token, "userId") VALUES($1, $2)`, [token, userExist.rows[0].id]);
-            
-            // const envToken = await db.query(`SELECT * FROM sessions WHERE token = $1`,[token]);
+
             res.status(200).send({token});
         }else{
             return res.sendStatus(401);
