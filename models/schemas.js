@@ -14,6 +14,5 @@ export const signinSchema = joi.object({
 
 export const shortSchema = joi.object({
     url: joi.string().regex(/^(http|https):\/\/[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/.*)?$/).required(),
-    shotUrl: joi.string().required()
 })
 
