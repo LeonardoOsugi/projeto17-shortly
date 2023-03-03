@@ -58,7 +58,38 @@ export async function getRedirect(req, res){
 
         await db.query(`UPDATE urls SET "visitCount" = $1 WHERE id = $2`, [link.rows[0].visitCount + 1, link.rows[0].id]);
 
-        res.redirect(link.rows[0].url);
+        const redirect = link.rows[0]
+
+        res.redirect(redirect.url);
+
+    }catch(err){
+        res.status(500).send(err);
+    }
+};
+
+export async function deleteUrl(req, res){
+    const {id} = req.params;
+    const {authorization} = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+
+    try{
+        const tokenExist = await db.query(`SELECT * FROM sessions WHERE token = $1`, [token]);
+
+        const urlExist = await db.query(`SELECT * FROM urls WHERE id = $1`, [id]);
+
+        if(urlExist.rowCount === 0){
+            return res.sendStatur(404);
+        }
+
+        const userExist = await db.query(`SELECT * FROM users WHERE id = $1`, [urlExist.rows[0].userId])
+        
+        if(!token || tokenExist.rowCount === 0 || userExist.rowCount === 0){
+            return res.sendStatus(401);
+        };
+
+        await db.query(`DELETE FROM urls WHERE id = $1`, [id]);
+
+        res.sendStatus(204);
 
     }catch(err){
         res.status(500).send(err);
