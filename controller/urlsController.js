@@ -58,7 +58,7 @@ export async function getRedirect(req, res){
 
         await db.query(`UPDATE urls SET "visitCount" = $1 WHERE "shortUrl" = $2`, [link.rows[0].visitCount + 1, shortUrl]);
 
-        await db.query(`UPDATE users SET "visitCount" = $1 WHERE id = $2`,[userExist.rows[0]].visitCount + 1, link.rows[0].userId);
+        await db.query(`UPDATE users SET "visitCount" = $1 WHERE id = $2`,[userExist.rows[0].visitCount + 1, link.rows[0].userId]);
 
         const redirect = link.rows[0]
 
