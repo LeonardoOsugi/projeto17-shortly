@@ -61,6 +61,7 @@ CREATE TABLE public.urls (
     "userId" integer NOT NULL,
     "shortUrl" text NOT NULL,
     url text NOT NULL,
+    "visitCount" integer DEFAULT 0 NOT NULL,
     "createdAt" timestamp without time zone DEFAULT timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone) NOT NULL
 );
 
@@ -95,6 +96,7 @@ CREATE TABLE public.users (
     email character varying(255) NOT NULL,
     password text NOT NULL,
     "confirmPassword" text NOT NULL,
+    "visitCount" integer DEFAULT 0 NOT NULL,
     "createdAt" timestamp without time zone DEFAULT timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone) NOT NULL
 );
 
