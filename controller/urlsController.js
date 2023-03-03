@@ -78,12 +78,14 @@ export async function deleteUrl(req, res){
         const urlExist = await db.query(`SELECT * FROM urls WHERE id = $1`, [id]);
 
         if(urlExist.rowCount === 0){
-            return res.sendStatur(404);
+            return res.sendStatus(404);
         }
 
-        const userExist = await db.query(`SELECT * FROM users WHERE id = $1`, [urlExist.rows[0].userId])
+        if(urlExist.rows[0].userId !== tokenExist.rows[0].userId){
+            return res.sendStatus(401);
+        }
         
-        if(!token || tokenExist.rowCount === 0 || userExist.rowCount === 0){
+        if(!token || tokenExist.rowCount === 0){
             return res.sendStatus(401);
         };
 
