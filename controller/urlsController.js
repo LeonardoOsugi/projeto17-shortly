@@ -52,7 +52,7 @@ export async function getRedirect(req, res){
         const userExist = await db.query(`SELECT * FROM users WHERE id = $1`, [link.rows[0].userId])
 
 
-        if(link.rowCount === 0 || userExist.rowCount === 0){
+        if(link.rowCount === 0 ){
             return res.sendStatus(404);
         };
 
