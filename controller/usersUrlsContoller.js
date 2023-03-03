@@ -11,6 +11,21 @@ export async function getUserMe(req, res){
             return res.sendStatus(401);
         };
 
+        const linksUser = await db.query(`SELECT users.id, users.name, SUM(urls."visitCount") AS "visitCount" FROM users JOIN urls ON users.id = urls."userId" WHERE urls."userId" = $1 GROUP BY users.id`, [tokenExist.rows[0].userId]);
+
+        const linksUser2 = await db.query(`SELECT urls.id, urls."shortUrl", urls.url, urls."visitCount" FROM urls JOIN users ON urls."userId" = users.id WHERE urls."userId" = $1 GROUP BY urls.id`, [tokenExist.rows[0].userId]);
+
+        const {id, name,visitCount } = linksUser.rows[0]
+
+        const finalmente = {
+            id,
+            name,
+            visitCount,
+            shortenedUrls: linksUser2.rows
+        }
+
+        res.status(200).send(finalmente);
+
     }catch(err){
         res.status(500).send(err.message);
     }
