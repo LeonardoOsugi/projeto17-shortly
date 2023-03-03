@@ -58,10 +58,10 @@ export async function getRedirect(req, res){
 
         const redirect = link.rows[0]
 
-        res.redirect(redirect.url);
+        res.status(302).redirect(redirect.url);
 
     }catch(err){
-        res.status(500).send(err);
+        res.status(500).send(err.message);
     }
 };
 
