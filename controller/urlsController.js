@@ -49,14 +49,12 @@ export async function getRedirect(req, res){
         
         const link = await db.query(`SELECT * FROM urls WHERE "shortUrl" = $1`, [shortUrl]);
 
-        const sessoes = await db.query(`SELECT * FROM sessions WHERE id = $1`, [link.rows[0].id]);
 
-
-        if(link.rowCount === 0 || sessoes.rowCount === 0){
+        if(link.rowCount === 0 ){
             return res.sendStatus(404);
         };
 
-        await db.query(`UPDATE urls SET "visitCount" = $1 WHERE id = $2`, [link.rows[0].visitCount + 1, link.rows[0].id]);
+        await db.query(`UPDATE urls SET "visitCount" = $1 WHERE "shortUrl" = $2`, [link.rows[0].visitCount + 1, shortUrl]);
 
         const redirect = link.rows[0]
 
